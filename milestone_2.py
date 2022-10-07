@@ -1,6 +1,10 @@
+from milestone_1 import word, word_list
 
-guess = input('Enter a letter: ')
+guess_1 = input('Enter a letter: ')
 
-while len(guess) != 1 or guess.isalpha() == False:
+while len(guess_1) != 1 or guess_1.isalpha() == False:
     print("Invalid letter. Please enter a single alphabetical character.")
-    guess = input('Enter a letter: ')
+    guess_1 = input('Enter a letter: ')
+
+chosen_word = (word(word_list))
+
