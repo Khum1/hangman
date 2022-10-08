@@ -12,6 +12,7 @@ def ask_for_imput(guess):
 secret_word = (word(word_list))
 
 def check_guess(guess): 
+    guess.lower()
     if guess in secret_word:
         print(f'Good guess! {guess} is in the word')
     else:

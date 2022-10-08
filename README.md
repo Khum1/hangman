@@ -7,7 +7,7 @@ Creation of a game of hangman
 I have built a word list and a simple guessing input. The input will tell you when a guess is one letter long, and displays text to say "good guess" and when it is not one letter will display "oops! That is not a valid guess."
 Technologies used: python
 
-"""
+```python
 import random
 
 word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
@@ -25,14 +25,14 @@ if len(guess) == 1:
 else:
     print('Oops! That is not a valid input.')
     
-"""
-![](D:/Documents/Github/hangman/Screenshots/Capture.png)
+```
+![](Screenshots/Capture.png)
 
 ## Milestone 2
 
 I have used the word list and random word generator from milestone 1. For this I commented out the print functions and imported the file into milestone 2, making the word chooser a function. 
 
-"""
+```python
 from milestone_1 import word, word_list
 
 guess = ''
@@ -47,13 +47,15 @@ def ask_for_imput(guess):
 secret_word = (word(word_list))
 
 def check_guess(guess): 
+    guess.lower()
     if guess in secret_word:
         print(f'Good guess! {guess} is in the word')
     else:
         print(f'Sorry, {guess} is not in the word. Try again')
 
 ask_for_imput(guess)
-"""
+```
 
-![](D:/Documents/Github?hangman/Screenshots/Capture_terminal.png)
+![](Screenshots/Capture_terminal.png)
+
 
