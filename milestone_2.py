@@ -2,7 +2,7 @@ from milestone_1 import word, word_list
 
 guess = ''
 
-def ask_for_imput(guess):
+def ask_for_input(guess):
     guess = input('Enter a letter: ')
 
     while len(guess) != 1 or guess.isalpha() == False:
@@ -18,4 +18,4 @@ def check_guess(guess):
     else:
         print(f'Sorry, {guess} is not in the word. Try again')
 
-ask_for_imput(guess)
+ask_for_input(guess)
