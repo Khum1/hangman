@@ -57,76 +57,25 @@ class Hangman:
                 break
 
     def display_image(self):
-        if self.num_lives == 0:
-            for item in hangman_image:
-                for number in item:
-                    if number == 0:
-                        print(' ', end='')
-                    elif number == 1:
-                        print('O', end='')
-                    elif number == 2:
-                        print('|', end='') 
-                    elif number == 3:
-                        print('\\', end='')
-                    elif number == 4:
-                        print('/', end='')
-                    elif number == 9:
-                        print('_', end='')
-                    elif number == 8:
-                        print('|', end='')
-                print('')
-        elif self.num_lives == 1:
-            for item in hangman_image:
-                for number in item:
-                    if number == 0:
-                        print(' ', end='')
-                    elif number == 1:
-                        print('O', end='')
-                    elif number == 2:
-                        print('|', end='') 
-                    elif number == 4:
-                        print('/', end='')
-                    elif number == 9:
-                        print('_', end='')
-                    elif number == 8:
-                        print('|', end='')
-                print('')
-        elif self.num_lives == 2:
-            for item in hangman_image:
-                for number in item:
-                    if number == 0:
-                        print(' ', end='')
-                    elif number == 1:
-                        print('O', end='')
-                    elif number == 2:
-                        print(' |', end='') 
-                    elif number == 9:
-                        print('_', end='')
-                    elif number == 8:
-                        print('|', end='')
-                print('')
-        elif self.num_lives == 3:
-            for item in hangman_image:
-                for number in item:
-                    if number == 0:
-                        print(' ', end='')
-                    elif number == 1:
-                        print('O', end='')
-                    elif number == 9:
-                        print('_', end='')
-                    elif number == 8:
-                        print('|', end='')
-                print('')
-        elif self.num_lives == 4:
-            for item in hangman_image:
-                for number in item:
-                    if number == 0:
-                        print(' ', end='')
-                    elif number == 9:
-                        print('_', end='')
-                    elif number == 8:
-                        print('|', end='')
-                print('')
+        for item in hangman_image:
+            for number in item:
+                if number == 0:
+                    print(' ', end='')
+                elif number == 1 and self.num_lives <= 3:
+                    print('O', end='')
+                elif number == 2 and self.num_lives <= 2:
+                    print('|', end='') 
+                elif number == 3 and self.num_lives <= 1:
+                    print('\\', end='')
+                elif number == 4 and self.num_lives <= 0:
+                    print('/', end='')
+                elif number == 4 and self.num_lives > 0: # formatting 
+                    print(' ', end='')
+                elif number == 9 and self.num_lives <= 4:
+                    print('_', end='')
+                elif number == 8 and self.num_lives <= 4:
+                    print('|', end='')
+            print('')
 
     
 
