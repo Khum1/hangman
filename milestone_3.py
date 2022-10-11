@@ -39,6 +39,7 @@ class Hangman:
             self.num_lives -= 1
             print(f'Sorry, {guess} is not in the word. Try again')
             print (f'You have {self.num_lives} lives left.')
+            self.display_image()
     
     def ask_for_input(self):
         guess = input('Enter a letter: ')
@@ -55,6 +56,80 @@ class Hangman:
                 self.list_of_guesses.append(guess)
                 break
 
+    def display_image(self):
+        if self.num_lives == 0:
+            for item in hangman_image:
+                for number in item:
+                    if number == 0:
+                        print(' ', end='')
+                    elif number == 1:
+                        print('O', end='')
+                    elif number == 2:
+                        print('|', end='') 
+                    elif number == 3:
+                        print('\\', end='')
+                    elif number == 4:
+                        print('/', end='')
+                    elif number == 9:
+                        print('_', end='')
+                    elif number == 8:
+                        print('|', end='')
+                print('')
+        elif self.num_lives == 1:
+            for item in hangman_image:
+                for number in item:
+                    if number == 0:
+                        print(' ', end='')
+                    elif number == 1:
+                        print('O', end='')
+                    elif number == 2:
+                        print('|', end='') 
+                    elif number == 4:
+                        print('/', end='')
+                    elif number == 9:
+                        print('_', end='')
+                    elif number == 8:
+                        print('|', end='')
+                print('')
+        elif self.num_lives == 2:
+            for item in hangman_image:
+                for number in item:
+                    if number == 0:
+                        print(' ', end='')
+                    elif number == 1:
+                        print('O', end='')
+                    elif number == 2:
+                        print(' |', end='') 
+                    elif number == 9:
+                        print('_', end='')
+                    elif number == 8:
+                        print('|', end='')
+                print('')
+        elif self.num_lives == 3:
+            for item in hangman_image:
+                for number in item:
+                    if number == 0:
+                        print(' ', end='')
+                    elif number == 1:
+                        print('O', end='')
+                    elif number == 9:
+                        print('_', end='')
+                    elif number == 8:
+                        print('|', end='')
+                print('')
+        elif self.num_lives == 4:
+            for item in hangman_image:
+                for number in item:
+                    if number == 0:
+                        print(' ', end='')
+                    elif number == 9:
+                        print('_', end='')
+                    elif number == 8:
+                        print('|', end='')
+                print('')
+
+    
+
 def play_game():
     word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
     game = Hangman(word_list, 5)
@@ -68,5 +143,15 @@ def play_game():
         else:
             print("Congrats, you won the game!")
             break
+
+
+hangman_image = [
+  [9,9,9,9,9],
+  [8,0,0,1,0],
+  [8,0,4,2,3],
+  [8,0,4,0,3],
+  [9,9,9,9,9]
+    ]
     
+
 play_game()
