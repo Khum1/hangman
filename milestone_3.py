@@ -4,7 +4,7 @@ from re import A
 class Hangman:
 
     def __init__(self, word_list, num_lives):
-        self.num_lives = 5
+        self.num_lives = num_lives
         self.word_list = word_list
         self.word = random.choice(word_list)
         self.word_guessed = []
@@ -46,20 +46,27 @@ class Hangman:
         while True:
             if len(guess) != 1 or guess.isalpha() == False:
                 print("Invalid letter. Please enter a single alphabetical character.")
-                guess = input('Enter a letter: ')
+                break
             elif guess in self.list_of_guesses:
                 print('You already tried that letter!')
-                guess = input('Enter a letter: ')
+                break
             else:
                 self.check_guess(guess)
                 self.list_of_guesses.append(guess)
-                guess = input('Enter a letter: ')
+                break
 
-word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
-
-h = Hangman(word_list, 5)
-
-print(h.word_guessed)
-
-h.ask_for_input()
-
+def play_game():
+    word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
+    game = Hangman(word_list, 5)
+    print(game.word_guessed)
+    while True:
+        if game.num_lives > 0 and game.num_letters != 0:
+            game.ask_for_input()
+        elif game.num_lives == 0:
+            print("You lose!")
+            break
+        else:
+            print("Congrats, you won the game!")
+            break
+    
+play_game()
