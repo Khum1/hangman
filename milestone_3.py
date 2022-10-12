@@ -94,7 +94,7 @@ def play_game():
             break
 
 
-hangman_image = [
+hangman_image = [ #Image matrix for displaying the evolving hangman
   [9,9,9,9,9],
   [8,0,0,1,0],
   [8,0,4,2,3],
