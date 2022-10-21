@@ -1,11 +1,11 @@
-# Hangman
+## Project title: Hangman
 
-Creation of a game of hangman
+In this project I have created the game Hangman using python. This project allowed me to develop my coding skills in python and consolidate some of the principles that I have previously learnt such as if and while loops. I have also begun learning, understanding and applying basic principles of OOP (Classes).
+Technologies used: python
 
 ## Milestone 2
 
-I have built a word list and a simple guessing input. The input will tell you when a guess is one letter long, and displays text to say "good guess" and when it is not one letter will display "oops! That is not a valid guess."
-Technologies used: python
+I have built a word_list and a simple guess variable which takes in the user input. Based on the user input, a "Good guess!" or a "Oops! That is not a valid guess." will be displayed. 
 
 ```python
 import random
@@ -30,8 +30,8 @@ else:
 
 ## Milestone 3
 
-I have used the word list and random word generator from milestone 1. For this I commented out the print functions and imported the file into milestone 2, making the word chooser a function. 
-Technologies used: python
+I have used the word_list and random word generator from milestone_1. I imported the file into milestone_2, making the word chooser a function. 
+
 
 ```python
 from milestone_1 import word, word_list
@@ -62,8 +62,8 @@ ask_for_imput(guess)
 
 ## Milestone 4
 
-I have used the definitions created in milestone 2 as a basis for the code in the main game, creating the class hangman. To this I have added functions to initialise the attributes of the game. I created functions to populate the word to be guessed first with '_' and then, following a correct input, with the correct letter at the appropriate index. If an incorrect value is guessed, the player will lose a life and display a message stating the guess is incorrect. 
-Technologies used: python
+I have used the variables/functions created in milestone_2 as a basis for the code in the main game, creating the game class Hangman. I used the __init__ contructor to initialise the attributes of the game. I created methods to populate the word to be guessed first with _ and then, following a correct input, the underscore will be replaces with the correctly guessed letter. If an incorrect value is guessed, the player will lose a life and display a message stating the guess is incorrect. 
+
 
 ```python
 import random
@@ -135,8 +135,9 @@ h.ask_for_input()
 ![](Screenshots/Milestone_3.PNG)
 
 ## Milestone 5
-I put the game together in this milestone, creating the play_game function which ultimately allows the game to be played - losing a life when an incorrect guess is inputted and showing the letter in the correct place when a correct guess in inputted. As an extra I have built the hangman image for each incorrect guess, adding a section of the hangman each time a guess is incorrect. 
-Technologies used: python
+I put the game together in this milestone, creating the play_game function which creates an instance of the Hangman class and provides the game logic. 
+When the users choice is incorrect, the user is losing a life, otherwise if the user's choice is correct, then the correct letter will replace the underscore in the hidden word at the correct index.
+The hangman_image list was used to draw a section of the hangman every time a life was lost/a guess was incorrect.
 
 ```python
 import random
@@ -252,7 +253,5 @@ play_game()
 
 ## Conclusion
 
-This task has allowed me to learn more about Classes and how they are used as well as delving deeper into for and while loops. 
+This task has allowed me to delve deeper into my knowledge and understanding of for and while loops and begin practicing and understanding OOP (Classes).
 
-To improve this I have refactored the image as my initial code was quite bulky, this commit was taken before the refactor: https://github.com/Khum1/hangman/commit/aed4f81bede7758bcded7fd254a414ec2a8be30d
-Further improvement could be made by refactoring more of the code.

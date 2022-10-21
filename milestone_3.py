@@ -1,33 +1,99 @@
 import random
-from re import A
 
 class Hangman:
 
+    '''
+    A class to start a game of Hangman
+    ...
+    Attributes
+    ----------
+    num_lives : int
+        number of lives that the player has remaining
+    word_list : list
+        list of the possible words to guess
+    word : str
+        random word chosen from the word_list
+    word_guessed : list
+        representation of the word to be guessed with '_' to be replaced with the correct letters guessed
+    num_letters: int
+        number of unique letters in the word that have not been guessed yet
+    list_of_guesses : list
+        list of guesses that have already been tried
+
+    Methods
+    -------
+    get_unique_letters():
+        gets the number of unique letters to be guessed
+    check_guess(guess):
+        checks whether the letter guessed is in the word chosen
+    ask_for_input():
+        asks the player for a letter to be guessed
+    display_image():
+        displays the image of the evolving hangman with each wrong guess
+
+    '''
+
     def __init__(self, word_list, num_lives):
+        '''
+        Constructs the necessary attributes for the Hangman object.
+
+        Parameters
+        ----------
+        num_lives : int
+            number of lives that the player has remaining
+        word_list : list
+            list of the possible words to guess
+        word : str
+            random word chosen from the word_list
+        word_guessed : list
+            representation of the word to be guessed with '_' to be replaced with the correct letters guessed
+        num_letters: int
+            number of unique letters in the word that have not been guessed yet
+        list_of_guesses : list
+            list of guesses that have already been tried
+        '''
         self.num_lives = num_lives
         self.word_list = word_list
         self.word = random.choice(word_list)
-        self.word_guessed = []
-        self.populate_word_guessed()
+        self.word_guessed = self.word_guessed = len(self.word)*["_"]
         self.num_letters = self.get_num_unique_letters()
         self.list_of_guesses = []
 
-    def populate_word_guessed(self):
-        for letters in self.word:
-            self.word_guessed.append('_')
         
     def get_num_unique_letters(self):
-        word_set = set({})
+        '''
+        Gets the number of unique letters to be guessed.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        len(unique_letters_set) - letters_guessed (int): the number of the unique letters in the word - the number of correct letters guessed
+
+        '''
+        unique_letters_set = set()
         letters_guessed = 0
         for letter in self.word:
-            if letter in self.word_guessed and letter not in word_set:
+            if letter in self.word_guessed and letter not in unique_letters_set:
                 letters_guessed += 1
-            word_set.add(letter)
-        unique_letters = len(word_set)
-        return unique_letters - letters_guessed
+            unique_letters_set.add(letter)
+        return len(unique_letters_set) - letters_guessed 
 
     def check_guess(self, guess): 
-        guess.lower()
+        '''
+        Checks whether the letter guessed is in the word chosen.
+
+        Parameters
+        ----------
+        guess (str) : input from the player to guess a letter in the word
+
+        Returns
+        -------
+        None
+        '''
+        guess = guess.lower()
         if guess in self.word:
             print(f'Good guess! {guess} is in the word')
             for i in range(len(self.word)):
@@ -42,6 +108,19 @@ class Hangman:
             self.display_image()
     
     def ask_for_input(self):
+        '''
+        Asks the player for a letter to be guessed. 
+        If the letter has already been guessed or the letter is non-alphabetical or more than one letter is 
+        guessed, it will return a statement to try a different letter.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         guess = input('Enter a letter: ')
 
         while True:
@@ -57,6 +136,17 @@ class Hangman:
                 break
 
     def display_image(self):
+        '''
+        Displays the image of the evolving hangman with each wrong guess.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         for item in hangman_image:
             for number in item:
                 if number == 0:
@@ -80,6 +170,18 @@ class Hangman:
     
 
 def play_game():
+    '''
+    Calls an instance of a game of Hangman.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    '''
     word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
     game = Hangman(word_list, 5)
     print(game.word_guessed)
