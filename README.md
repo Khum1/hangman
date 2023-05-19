@@ -1,7 +1,14 @@
-## Project title: Hangman
+# Hangman
 
-In this project I have created the game Hangman using python. This project allowed me to develop my coding skills in python and consolidate some of the principles that I have previously learnt such as if and while loops. I have also begun learning, understanding and applying basic principles of OOP (Classes).
-Technologies used: python
+In this project I have created the game Hangman using python. Once started, the game will choose a fruit from a list of items and replace the number of letters with blanks to fill in. It will ask you to enter a letter, if the letter is contained in the secret word, it will imput the letter into the correct position. If not, it will remove a life from your stash and begin building the hangman. The game ends either when you guess the word correctly, or you lose 5 lives. 
+This project allowed me to develop my coding skills in python and consolidate some of the principles that I have previously learnt such as if and while loops. I have also begun learning, understanding and applying basic principles of OOP (Classes).
+
+## Getting Started
+
+
+
+Technologies used: Python 3.11.0
+Run from 
 
 ## Milestone 2
 
