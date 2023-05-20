@@ -1,4 +1,4 @@
-from milestone_1 import word, word_list
+from random_word_generator import word, word_list
 
 guess = ''
 
