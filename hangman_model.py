@@ -25,6 +25,10 @@ class Hangman:
     -------
     get_unique_letters():
         gets the number of unique letters to be guessed
+    successful_guess(guess):
+        on a successful guess, fills in the word_board with the correct letter in the correct place.
+    unsuccessful_guess(guess):
+        on an unsuccessful guess, removes a life and displays number of lives left and hangman image.
     check_guess(guess):
         checks whether the letter guessed is in the word chosen
     ask_for_input():
@@ -83,16 +87,39 @@ class Hangman:
         return len(unique_letters_set) - letters_guessed
     
     def successful_guess(self, guess):
+        '''
+        On a successful guess, fills in the word_board with the correct letter in the correct place.
+        
+        Parameters
+        ----------
+        guess (str) : input from the player to guess a letter in the word
+
+        Returns
+        -------
+        None
+        '''
         print(f'Good guess! {guess} is in the word')
         for i in range(len(self.word)):
             if guess == self.word[i]:
                 self.word_board[i] = guess
-        return guess
-    
+        print (self.word_board)
+
     def unsuccessful_guess(self, guess):
+        '''
+        On an unsuccessful guess, removes a life and displays number of lives left and hangman image.
+
+        Parameters
+        ----------
+        guess (str) : input from the player to gues a leter in the word
+        
+        Returns
+        -------
+        None
+        '''
+        self.num_lives -= 1
         print(f'Sorry, {guess} is not in the word. Try again')
         print (f'You have {self.num_lives} lives left.')
-        return guess
+        display_image()
 
     def check_guess(self, guess): 
         '''
@@ -109,15 +136,9 @@ class Hangman:
         guess = guess.lower()
         if guess in self.word:
             self.successful_guess(guess)
-            print (self.word_board)
             self.num_letters = self.get_num_unique_letters()
         else:
-            self.num_lives -= 1
             self.unsuccessful_guess(guess)
-            display_image()
-    
-    
-
 
 def play_game():
     '''
