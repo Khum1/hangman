@@ -5,10 +5,13 @@ This project allowed me to develop my coding skills in python and consolidate so
 
 ## Getting Started
 
+* Install Python (3.11.0)
+* In the command line, from the project directory **hangman**, execute
+```
+python milestone_3.py
+```
 
 
-Technologies used: Python 3.11.0
-Run from 
 
 ## Milestone 2
 
