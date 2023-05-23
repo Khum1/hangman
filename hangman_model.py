@@ -1,4 +1,5 @@
 import random
+from user_interface import display_image, ask_for_input
 
 class Hangman:
 
@@ -79,7 +80,19 @@ class Hangman:
             if letter in self.word_board and letter not in unique_letters_set:
                 letters_guessed += 1
             unique_letters_set.add(letter)
-        return len(unique_letters_set) - letters_guessed 
+        return len(unique_letters_set) - letters_guessed
+    
+    def successful_guess(self, guess):
+        print(f'Good guess! {guess} is in the word')
+        for i in range(len(self.word)):
+            if guess == self.word[i]:
+                self.word_board[i] = guess
+        return guess
+    
+    def unsuccessful_guess(self, guess):
+        print(f'Sorry, {guess} is not in the word. Try again')
+        print (f'You have {self.num_lives} lives left.')
+        return guess
 
     def check_guess(self, guess): 
         '''
@@ -95,17 +108,13 @@ class Hangman:
         '''
         guess = guess.lower()
         if guess in self.word:
-            print(f'Good guess! {guess} is in the word')
-            for i in range(len(self.word)):
-                if guess == self.word[i]:
-                    self.word_board[i] = guess
+            self.successful_guess(guess)
             print (self.word_board)
             self.num_letters = self.get_num_unique_letters()
         else:
             self.num_lives -= 1
-            print(f'Sorry, {guess} is not in the word. Try again')
-            print (f'You have {self.num_lives} lives left.')
-            self.display_image()
+            self.unsuccessful_guess(guess)
+            display_image()
     
     
 
@@ -128,7 +137,7 @@ def play_game():
     print(game.word_board)
     while True:
         if game.num_lives > 0 and game.num_letters != 0:
-            game.ask_for_input()
+            ask_for_input()
         elif game.num_lives == 0:
             print(f"You lost the game! The word was {game.word}.")
             break

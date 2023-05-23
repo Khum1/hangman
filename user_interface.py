@@ -1,20 +1,5 @@
 
-conditions = {
-' ': lambda: True,
-'O': lambda: ui.num_lives <= 3,
-'|': lambda: ui.num_lives <= 2,
-'\\': lambda: ui.num_lives <= 1,
-'/': lambda: ui.num_lives <= 0,
-'_': lambda: ui.num_lives <= 4,
-}
 
-hangman_image = [ #Image matrix for displaying the evolving hangman
-    ['_','_','_','_','_'],
-    ['|',' ',' ','O',' '],
-    ['|',' ','/','|','\\'],
-    ['|',' ','/',' ','\\'],
-    ['_','_','_','_','_']
-    ]
 
 class UserInterface():
 
@@ -66,6 +51,24 @@ class UserInterface():
             line = ''.join(char if self.check_condition() else ' ' for char in item)
             print(line)
 
+
 ui = UserInterface() 
+
+conditions = {
+' ': True,
+'O': ui.num_lives <= 3,
+'|': ui.num_lives <= 2,
+'\\': ui.num_lives <= 1,
+'/': ui.num_lives <= 0,
+'_': ui.num_lives <= 4,
+}
+
+hangman_image = [ #Image matrix for displaying the evolving hangman
+    ['_','_','_','_','_'],
+    ['|',' ',' ','O',' '],
+    ['|',' ','/','|','\\'],
+    ['|',' ','/',' ','\\'],
+    ['_','_','_','_','_']
+    ]
 
 
