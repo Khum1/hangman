@@ -1,7 +1,19 @@
 
-
-
 class UserInterface():
+    '''
+    Creates user  interface for hangman game.
+
+    Attributes
+    ----------
+    num_lives : int
+        number of lives that the player has remaining
+
+    Methods
+    -------
+
+    '''
+    def __init__(self, num_lives):
+        self.num_lives = num_lives
 
     def ask_for_input(self):
         '''
@@ -31,6 +43,17 @@ class UserInterface():
                 break
 
     def check_condition(self):
+        '''
+        Checks the conditions are met in the conditions matrix
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        False : bool
+        '''
         if self.char in conditions:
             return conditions[self.char]()
         return False
@@ -51,8 +74,8 @@ class UserInterface():
             line = ''.join(char if self.check_condition() else ' ' for char in item)
             print(line)
 
-
-ui = UserInterface() 
+num_lives = 5
+ui = UserInterface(num_lives) 
 
 conditions = {
 ' ': True,

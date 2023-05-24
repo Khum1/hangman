@@ -1,5 +1,5 @@
 import random
-from user_interface import display_image, ask_for_input
+from user_interface import display_image, ask_for_input, num_lives
 
 class Hangman:
 
@@ -8,8 +8,6 @@ class Hangman:
     ...
     Attributes
     ----------
-    num_lives : int
-        number of lives that the player has remaining
     word_list : list
         list of the possible words to guess
     word : str
@@ -38,14 +36,12 @@ class Hangman:
 
     '''
 
-    def __init__(self, word_list, num_lives):
+    def __init__(self, word_list):
         '''
         Constructs the necessary attributes for the Hangman object.
 
         Parameters
         ----------
-        num_lives : int
-            number of lives that the player has remaining
         word_list : list
             list of the possible words to guess
         word : str
@@ -57,7 +53,6 @@ class Hangman:
         list_of_guesses : list
             list of guesses that have already been tried
         '''
-        self.num_lives = num_lives
         self.word_list = word_list
         self.word = random.choice(word_list)
         self.word_board = self.word_board = len(self.word)*["_"]
@@ -116,9 +111,9 @@ class Hangman:
         -------
         None
         '''
-        self.num_lives -= 1
+        num_lives -= 1
         print(f'Sorry, {guess} is not in the word. Try again')
-        print (f'You have {self.num_lives} lives left.')
+        print (f'You have {num_lives} lives left.')
         display_image()
 
     def check_guess(self, guess): 
@@ -140,6 +135,17 @@ class Hangman:
         else:
             self.unsuccessful_guess(guess)
 
+    def win_lose_continue(self):
+        while True:
+            if num_lives > 0 and self.num_letters != 0:
+                ask_for_input()
+            elif num_lives == 0:
+                print(f"You lost the game! The word was {self.word}.")
+                break
+            else:
+                print("Congrats, you won the game!")
+                break
+
 def play_game():
     '''
     Calls an instance of a game of Hangman.
@@ -154,17 +160,8 @@ def play_game():
 
     '''
     word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
-    game = Hangman(word_list, 5)
+    game = Hangman(word_list, num_lives)
     print(game.word_board)
-    while True:
-        if game.num_lives > 0 and game.num_letters != 0:
-            ask_for_input()
-        elif game.num_lives == 0:
-            print(f"You lost the game! The word was {game.word}.")
-            break
-        else:
-            print("Congrats, you won the game!")
-            break
-    
+    game.win_lose_continue()
 
 play_game()
