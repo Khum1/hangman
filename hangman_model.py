@@ -82,6 +82,20 @@ class Hangman:
 
     
     def process_input(self, guess):
+        '''
+        Converts the guess to lower case and checks it is a valid guess using the __check_valid_guess() method
+
+        Parameters
+        ----------
+        guess : str
+            input from the player to guess a letter in the word
+        
+        Returns
+        -------
+        guess
+            input from the player to guess a letter in the word converted to a lower case letter
+
+        '''
         guess = guess.lower()
         while True:
             self.__check_valid_guess(guess)
@@ -188,6 +202,17 @@ class Hangman:
             self.unsuccessful_guess(guess)
 
     def win_lose_continue(self):
+        '''
+        Checks num_letters is greater than 0 and self.ui.num_lives is greater than 0, if either proves True, tells you whether you won or lost. 
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         while True:  
             if self.ui.num_lives > 0 and self.num_letters > 0:
                 guess = self.ui.ask_for_input()
