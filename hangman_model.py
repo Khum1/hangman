@@ -242,4 +242,5 @@ def play_game():
     print(game.word_board)
     game.win_lose_continue()
         
-
+if __name__ == "__main__":
+    play_game()
