@@ -8,5 +8,6 @@ class HangmanTestCaase(unittest.TestCase):
         self.game = Hangman(self.word_list)
 
     def test_word_is_chosen(self):
-        self.word = random.choice(self.word_list)
         self.assertNotEqual(self.game.word, None)
+
+    
