@@ -242,4 +242,4 @@ def play_game():
     print(game.word_board)
     game.win_lose_continue()
         
-play_game()
+
