@@ -60,7 +60,7 @@ class Hangman:
         self.list_of_guesses = []
         self.ui = UserInterface()
 
-    def check_letter_in_board(self, letter, unique_letters_set):
+    def __check_letter_in_board(self, letter, unique_letters_set):
         '''
         Checks if the letter given is in the game_board or unique_letters_set.
 
@@ -139,7 +139,7 @@ class Hangman:
         unique_letters_set = set()
         self.letters_guessed = 0
         for letter in self.word: 
-            self.check_letter_in_board(letter, unique_letters_set)
+            self.__check_letter_in_board(letter, unique_letters_set)
             unique_letters_set.add(letter)
         self.num_letters = int(len(unique_letters_set) - self.letters_guessed)
         return self.num_letters
