@@ -5,7 +5,7 @@ class Hangman:
 
     '''
     A class to start a game of Hangman
-    ...
+    ... 
     Attributes
     ----------
     word_list : list
@@ -59,7 +59,30 @@ class Hangman:
         self.num_letters = self.get_num_unique_letters()
         self.list_of_guesses = []
 
-        
+    def check_letter_in_board(self, letter, letters_guessed, unique_letters_set):
+        '''
+        Checks if the letter given is in the game_board or unique_letters_set.
+
+        Parameters
+        ----------
+        letter : str
+            guessed by the player
+        letters_guessed : int 
+            number of unique letters guessed by the player
+        unique_letters_set : set 
+            a set listing all of the letters that have been guessed by the player
+
+        Returns
+        -------
+        letters_guessed : int
+            number of unique letters guessed by the player
+
+
+        '''
+        if letter in self.word_board and letter not in unique_letters_set:
+            letters_guessed += 1
+        return letters_guessed
+
     def get_num_unique_letters(self):
         '''
         Gets the number of unique letters to be guessed.
@@ -70,14 +93,14 @@ class Hangman:
 
         Returns
         -------
-        len(unique_letters_set) - letters_guessed (int): the number of the unique letters in the word - the number of correct letters guessed
+        len(unique_letters_set) - letters_guessed : int
+            the number of the unique letters in the word - the number of correct letters guessed
 
         '''
         unique_letters_set = set()
         letters_guessed = 0
         for letter in self.word: 
-            if letter in self.word_board and letter not in unique_letters_set:
-                letters_guessed += 1
+            self.check_letter_in_board(letter, letters_guessed, unique_letters_set)
             unique_letters_set.add(letter)
         return len(unique_letters_set) - letters_guessed
     
@@ -87,7 +110,8 @@ class Hangman:
         
         Parameters
         ----------
-        guess (str) : input from the player to guess a letter in the word
+        guess : str
+            input from the player to guess a letter in the word
 
         Returns
         -------
@@ -105,7 +129,8 @@ class Hangman:
 
         Parameters
         ----------
-        guess (str) : input from the player to gues a leter in the word
+        guess : str
+            input from the player to gues a letter in the word
         
         Returns
         -------
@@ -122,8 +147,9 @@ class Hangman:
 
         Parameters
         ----------
-        guess (str) : input from the player to guess a letter in the word
-
+        guess : str
+            input from the player to gues a letter in the word
+            
         Returns
         -------
         None

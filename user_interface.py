@@ -31,16 +31,30 @@ class UserInterface():
         '''
         guess = input('Enter a letter: ')
         while True:
-            if len(guess) != 1 or guess.isalpha() == False:
-                print("Invalid letter. Please enter a single alphabetical character.")
-                break
-            elif guess in self.list_of_guesses:
-                print('You already tried that letter!')
-                break
-            else:
-                self.check_guess(guess)
-                self.list_of_guesses.append(guess)
-                break
+            self.check_valid_guess(guess)
+            break
+
+    
+    def check_valid_guess(self, guess):
+        '''
+        Checks that the guess is a single letter of the alphabet
+
+        Parameters
+        ----------
+        guess : str
+            input from the player to guess a letter in the word
+
+        Returns
+        -------
+        None
+        '''
+        if len(guess) != 1 or guess.isalpha() == False:
+            print("Invalid letter. Please enter a single alphabetical character.")
+        elif guess in self.list_of_guesses:
+            print('You already tried that letter!')
+        else:
+            self.check_guess(guess)
+            self.list_of_guesses.append(guess)
 
     def check_condition(self):
         '''
