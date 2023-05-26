@@ -60,7 +60,7 @@ class Hangman:
         self.list_of_guesses = []
         self.ui = UserInterface()
 
-    def check_letter_in_board(self, letter, letters_guessed, unique_letters_set):
+    def check_letter_in_board(self, letter, unique_letters_set):
         '''
         Checks if the letter given is in the game_board or unique_letters_set.
 
@@ -68,26 +68,24 @@ class Hangman:
         ----------
         letter : str
             guessed by the player
-        letters_guessed : int 
-            number of unique letters guessed by the player
         unique_letters_set : set 
             a set listing all of the letters that have been guessed by the player
 
         Returns
         -------
-        letters_guessed : int
-            number of unique letters guessed by the player
+        None
 
 
         '''
         if letter in self.word_board and letter not in unique_letters_set:
-            letters_guessed += 1
-        return letters_guessed
+            self.letters_guessed += 1
+
     
     def process_input(self, guess):
+        guess = guess.lower()
         while True:
             self.__check_valid_guess(guess)
-            break
+            return guess
     
     def __check_valid_guess(self, guess):
         '''
@@ -120,17 +118,18 @@ class Hangman:
 
         Returns
         -------
-        len(unique_letters_set) - letters_guessed : int
+        len(unique_letters_set) - self.letters_guessed : int
             the number of the unique letters in the word - the number of correct letters guessed
 
         '''
         unique_letters_set = set()
-        letters_guessed = 0
+        self.letters_guessed = 0
         for letter in self.word: 
-            self.check_letter_in_board(letter, letters_guessed, unique_letters_set)
+            self.check_letter_in_board(letter, unique_letters_set)
             unique_letters_set.add(letter)
-        return len(unique_letters_set) - letters_guessed
-    
+        self.num_letters = int(len(unique_letters_set) - self.letters_guessed)
+        return self.num_letters
+
     def successful_guess(self, guess):
         '''
         On a successful guess, fills in the word_board with the correct letter in the correct place.
@@ -148,6 +147,7 @@ class Hangman:
         for i in range(len(self.word)):
             if guess == self.word[i]:
                 self.word_board[i] = guess
+        self.num_letters -= 1
         print (self.word_board)
 
     def unsuccessful_guess(self, guess):
@@ -167,6 +167,7 @@ class Hangman:
         print(f'Sorry, {guess} is not in the word. Try again')
         print (f'You have {self.ui.num_lives} lives left.')
         self.ui.display_image()
+        print (self.word_board)
 
     def check_guess(self, guess): 
         '''
@@ -181,24 +182,22 @@ class Hangman:
         -------
         None
         '''
-        guess = guess.lower()
         if guess in self.word:
             self.successful_guess(guess)
-            self.num_letters = self.get_num_unique_letters()
         else:
             self.unsuccessful_guess(guess)
 
     def win_lose_continue(self):
-            
-        if self.ui.num_lives > 0 and self.num_letters != 0:
-            guess = self.ui.ask_for_input()
-            self.process_input(guess)
-            return guess
-        elif self.ui.num_lives == 0:
-            print(f"You lost the game! The word was {self.word}.")
-        else:
-            print("Congrats, you won the game!")
-
+        while True:  
+            if self.ui.num_lives > 0 and self.num_letters > 0:
+                guess = self.ui.ask_for_input()
+                self.process_input(guess)
+            elif self.ui.num_lives == 0:
+                print(f"You lost the game! The word was {self.word}.")
+                break
+            else:
+                print("Congrats, you won the game!")
+                break
 
 def play_game():
     '''
@@ -216,10 +215,6 @@ def play_game():
     word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
     game = Hangman(word_list)
     print(game.word_board)
-    while True:
-        game.win_lose_continue()
+    game.win_lose_continue()
         
-        
-    
-
 play_game()
