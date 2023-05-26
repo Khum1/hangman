@@ -31,11 +31,11 @@ class UserInterface():
         '''
         guess = input('Enter a letter: ')
         while True:
-            self.check_valid_guess(guess)
+            self.__check_valid_guess(guess)
             break
 
     
-    def check_valid_guess(self, guess):
+    def __check_valid_guess(self, guess):
         '''
         Checks that the guess is a single letter of the alphabet
 
@@ -56,7 +56,7 @@ class UserInterface():
             self.check_guess(guess)
             self.list_of_guesses.append(guess)
 
-    def check_condition(self):
+    def __check_condition(self):
         '''
         Checks the conditions are met in the conditions matrix
 
@@ -85,7 +85,7 @@ class UserInterface():
         None
         '''
         for item in hangman_image:
-            line = ''.join(char if self.check_condition() else ' ' for char in item)
+            line = ''.join(char if self.__check_condition() else ' ' for char in item)
             print(line)
 
 num_lives = 5

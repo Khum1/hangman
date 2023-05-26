@@ -1,5 +1,5 @@
 import random
-from user_interface import display_image, ask_for_input, num_lives
+from user_interface import UserInterface, num_lives
 
 class Hangman:
 
@@ -58,6 +58,7 @@ class Hangman:
         self.word_board = self.word_board = len(self.word)*["_"]
         self.num_letters = self.get_num_unique_letters()
         self.list_of_guesses = []
+        self.ui = UserInterface(5)
 
     def check_letter_in_board(self, letter, letters_guessed, unique_letters_set):
         '''
@@ -139,7 +140,7 @@ class Hangman:
         num_lives -= 1
         print(f'Sorry, {guess} is not in the word. Try again')
         print (f'You have {num_lives} lives left.')
-        display_image()
+        self.ui.display_image()
 
     def check_guess(self, guess): 
         '''
@@ -149,7 +150,7 @@ class Hangman:
         ----------
         guess : str
             input from the player to gues a letter in the word
-            
+
         Returns
         -------
         None
@@ -164,7 +165,7 @@ class Hangman:
     def win_lose_continue(self):
         while True:
             if num_lives > 0 and self.num_letters != 0:
-                ask_for_input()
+                self.ui.ask_for_input()
             elif num_lives == 0:
                 print(f"You lost the game! The word was {self.word}.")
                 break
@@ -186,7 +187,7 @@ def play_game():
 
     '''
     word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
-    game = Hangman(word_list, num_lives)
+    game = Hangman(word_list)
     print(game.word_board)
     game.win_lose_continue()
 
