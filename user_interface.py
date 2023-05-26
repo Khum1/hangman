@@ -12,8 +12,17 @@ class UserInterface():
     -------
 
     '''
-    def __init__(self, num_lives):
-        self.num_lives = num_lives
+    def __init__(self):
+        self.num_lives = 5
+        self.conditions = {
+            ' ': lambda: self.num_lives == 5,
+            '|': lambda: self.num_lives <=4,
+            'O': lambda: self.num_lives <= 3,
+            '[]': lambda: self.num_lives <= 2,
+            '\\': lambda: self.num_lives <= 1,
+            '/': lambda: self.num_lives <= 0,
+            '_': lambda: self.num_lives <= 4,
+        }  
 
     def ask_for_input(self):
         '''
@@ -30,33 +39,9 @@ class UserInterface():
         None
         '''
         guess = input('Enter a letter: ')
-        while True:
-            self.__check_valid_guess(guess)
-            break
+        return guess
 
-    
-    def __check_valid_guess(self, guess):
-        '''
-        Checks that the guess is a single letter of the alphabet
-
-        Parameters
-        ----------
-        guess : str
-            input from the player to guess a letter in the word
-
-        Returns
-        -------
-        None
-        '''
-        if len(guess) != 1 or guess.isalpha() == False:
-            print("Invalid letter. Please enter a single alphabetical character.")
-        elif guess in self.list_of_guesses:
-            print('You already tried that letter!')
-        else:
-            self.check_guess(guess)
-            self.list_of_guesses.append(guess)
-
-    def __check_condition(self):
+    def __check_condition(self, char):
         '''
         Checks the conditions are met in the conditions matrix
 
@@ -68,9 +53,8 @@ class UserInterface():
         -------
         False : bool
         '''
-        if self.char in conditions:
-            return conditions[self.char]()
-        return False
+        if char in self.conditions:
+            return self.conditions[char]()
 
     def display_image(self):
         '''
@@ -85,26 +69,19 @@ class UserInterface():
         None
         '''
         for item in hangman_image:
-            line = ''.join(char if self.__check_condition() else ' ' for char in item)
+            line = ''.join(char if self.__check_condition(char) else ' ' for char in item)
             print(line)
+     
 
-num_lives = 5
-ui = UserInterface(num_lives) 
+ui = UserInterface() 
 
-conditions = {
-' ': True,
-'O': ui.num_lives <= 3,
-'|': ui.num_lives <= 2,
-'\\': ui.num_lives <= 1,
-'/': ui.num_lives <= 0,
-'_': ui.num_lives <= 4,
-}
+
 
 hangman_image = [ #Image matrix for displaying the evolving hangman
     ['_','_','_','_','_'],
     ['|',' ',' ','O',' '],
-    ['|',' ','/','|','\\'],
-    ['|',' ','/',' ','\\'],
+    ['|','/','[]','\\'],
+    ['|','/',' ','\\'],
     ['_','_','_','_','_']
     ]
 
