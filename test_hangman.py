@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 class HangmanTestCaase(unittest.TestCase):
     def setUp(self):
-        self.word_list = ['cow', 'pig', 'hen']
+        self.word_list = ['bat', 'cat', 'rat']
         self.game = Hangman(self.word_list)
         
 
@@ -24,6 +24,14 @@ class HangmanTestCaase(unittest.TestCase):
         guess = "."
         self.game.process_input(guess)
         self.assertEqual(mock_stdout.getvalue(), "Invalid letter. Please enter a single alphabetical character.\n")
+
+    @patch('sys.stdout', new_callable = StringIO) #replaces the standard output with a str object for this test
+    def test_successful_guess(self, mock_stdout):
+        guess = "a"
+        self.game.check_guess(guess)
+        self.assertEqual(mock_stdout.getvalue(), "Good guess! a is in the word\n['_', 'a', '_']\n")
+
+    
 
     
         

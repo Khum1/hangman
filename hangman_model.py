@@ -147,7 +147,7 @@ class Hangman:
         self.num_letters = int(len(unique_letters_set) - self.letters_guessed)
         return self.num_letters
 
-    def successful_guess(self, guess):
+    def __successful_guess(self, guess):
         '''
         On a successful guess, fills in the word_board with the correct letter in the correct place.
         
@@ -165,9 +165,9 @@ class Hangman:
             if guess == self.word[i]:
                 self.word_board[i] = guess
         self.num_letters -= 1
-        print (self.word_board)
+        return self.word_board
 
-    def unsuccessful_guess(self, guess):
+    def __unsuccessful_guess(self, guess):
         '''
         On an unsuccessful guess, removes a life and displays number of lives left and hangman image.
 
@@ -184,7 +184,6 @@ class Hangman:
         print(f'Sorry, {guess} is not in the word. Try again')
         print (f'You have {self.ui.num_lives} lives left.')
         self.ui.display_image()
-        print (self.word_board)
 
     def check_guess(self, guess): 
         '''
@@ -200,9 +199,10 @@ class Hangman:
         None
         '''
         if guess in self.word:
-            self.successful_guess(guess)
+            self.__successful_guess(guess)
         else:
-            self.unsuccessful_guess(guess)
+            self.__unsuccessful_guess(guess)
+        print (self.word_board)
 
     def win_lose_continue(self):
         '''
