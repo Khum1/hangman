@@ -98,7 +98,8 @@ class Hangman:
         '''
         guess = guess.lower()
         while True:
-            self.__check_valid_guess(guess)
+            message = self.__check_valid_guess(guess)
+            print(message)
             return guess
     
     def __check_valid_guess(self, guess):
@@ -115,12 +116,14 @@ class Hangman:
         None
         '''
         if len(guess) != 1 or guess.isalpha() == False:
-            print("Invalid letter. Please enter a single alphabetical character.")
+            message = "Invalid letter. Please enter a single alphabetical character."
         elif guess in self.list_of_guesses:
-            print('You already tried that letter!')
+            message = "You already tried that letter!"
         else:
+            message = "Thats a valid letter"
             self.check_guess(guess)
             self.list_of_guesses.append(guess)
+        return message
 
     def get_num_unique_letters(self):
         '''
