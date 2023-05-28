@@ -1,5 +1,6 @@
 import random
 from user_interface import UserInterface
+from time import time
 
 class Hangman:
 
@@ -59,6 +60,7 @@ class Hangman:
         self.num_letters = self.get_num_unique_letters()
         self.list_of_guesses = []
         self.ui = UserInterface()
+        self.start_time = time()
 
     def __check_letter_in_board(self, letter, unique_letters_set):
         '''
@@ -224,8 +226,15 @@ class Hangman:
                 print(f"You lost the game! The word was {self.word}.")
                 break
             else:
-                print("Congrats, you won the game!")
+                self.end_time = time()
+                self.elapsed_time = self.final_timer()
+                print(f"Congrats, you won the game! You had {self.ui.num_lives} lives left and took {self.formatted_time} seconds to complete the word")
                 break
+    
+    def final_timer(self):
+        elapsed_time = self.end_time - self.start_time
+        self.formatted_time = "{:.2f}".format(elapsed_time)
+        return self.formatted_time
 
 def play_game():
     '''
