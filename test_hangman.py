@@ -30,6 +30,11 @@ class HangmanTestCaase(unittest.TestCase):
         guess = "a"
         self.game.check_guess(guess)
         self.assertEqual(mock_stdout.getvalue(), "Good guess! a is in the word\n['_', 'a', '_']\n")
+    
+    def test_check_unsuccessful_guess(self):
+        guess = "q"
+        self.game.check_guess(guess)
+        self.assertEqual(self.game.ui.num_lives, 4)
 
     
 
