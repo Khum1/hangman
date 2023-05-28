@@ -1,6 +1,9 @@
 import random
 from user_interface import UserInterface
 from time import time
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy_utils import database_exists, create_database
 
 class Hangman:
 
