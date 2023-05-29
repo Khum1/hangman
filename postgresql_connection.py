@@ -20,5 +20,11 @@ class HangmanLeaderboard():
         self.engine = create_engine(url, pool_size = 50, echo = False)
         return self.engine
 
-
+    def get_session(self):
+        session = sessionmaker(bind = self.engine)()
+        return session
+    
+    
+leaderboard = HangmanLeaderboard()
+session = leaderboard.get_session()    
 
