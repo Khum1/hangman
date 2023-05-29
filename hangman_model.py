@@ -1,6 +1,9 @@
 import random
 from user_interface import UserInterface
 from time import time
+from postgresql_connection import HangmanLeaderboard
+import pandas as pd
+from local_settings import postgresql as settings
 
 
 class Hangman:
@@ -62,6 +65,7 @@ class Hangman:
         self.list_of_guesses = []
         self.ui = UserInterface()
         self.start_time = time()
+        self.db = HangmanLeaderboard()
 
     def __check_letter_in_board(self, letter, unique_letters_set):
         '''
@@ -207,6 +211,12 @@ class Hangman:
             self.__unsuccessful_guess(guess)
         print (self.word_board)
 
+    def show_leaderboard(self):
+        name = input("Enter your name:")
+        df = pd.DataFrame([{"Name": f"{name}", "Lives": self.ui.num_lives, "Time": self.final_timer}])
+        df.to_sql(settings["pgdb"], self.db.engine, if_exists = "append")
+        pd.read_sql(settings["pgdb"], self.db.engine)
+
     def win_lose_continue(self):
         '''
         Checks num_letters is greater than 0 and self.ui.num_lives is greater than 0, if either proves True, tells you whether you won or lost. 
@@ -230,12 +240,13 @@ class Hangman:
                 self.end_time = time()
                 self.elapsed_time = self.final_timer()
                 print(f"Congrats, you won the game! You had {self.ui.num_lives} lives left and took {self.formatted_time} seconds to complete the word")
+                self.show_leaderboard() # TODO read through the pinterest project and get the connection updated
                 break
     
     def final_timer(self):
         elapsed_time = self.end_time - self.start_time
         self.formatted_time = "{:.2f}".format(elapsed_time)
-        return self.formatted_time
+        return self.formatted_time 
 
 def play_game():
     '''
