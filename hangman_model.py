@@ -211,18 +211,27 @@ class Hangman:
             self.__unsuccessful_guess(guess)
         print (self.word_board)
 
-    def show_leaderboard(self):
+    def show_leaderboard(self, formatted_time):
+        '''
+        Shows a leaderboard which is sorted by number of lives left and time taken
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         name = input("Enter your name:")
         data = {
             "name": [name],
             "lives": [self.ui.num_lives],
-            "time": [self.final_timer()]
+            "time": [formatted_time]
         }
         df = pd.DataFrame(data)
         df.to_sql("leaderboard", self.db.engine, if_exists="append", index=False)
-        
-        print(pd.read_sql("leaderboard", self.db.engine))
-
+        print(pd.read_sql("leaderboard", self.db.engine, columns=["name", "lives", "time"]).sort_values(by = ["lives", "time"], ascending=[False, True]))
 
     def win_lose_continue(self):
         '''
@@ -245,15 +254,26 @@ class Hangman:
                 break
             else:
                 self.end_time = time()
-                self.elapsed_time = self.final_timer()
-                print(f"Congrats, you won the game! You had {self.ui.num_lives} lives left and took {self.formatted_time} seconds to complete the word")
-                self.show_leaderboard() # TODO read through the pinterest project and get the connection updated
+                formatted_time = self.final_timer()
+                print(f"Congrats, you won the game! You had {self.ui.num_lives} lives left and took {formatted_time} seconds to complete the word")
+                self.show_leaderboard(formatted_time) 
                 break
     
     def final_timer(self):
+        '''
+        Timer to sort the leaderboard by in seconds
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        formatted_time
+        '''
         elapsed_time = self.end_time - self.start_time
-        self.formatted_time = "{:.2f}".format(elapsed_time)
-        return self.formatted_time 
+        formatted_time = "{:.2f}".format(elapsed_time)
+        return formatted_time 
 
 def play_game():
     '''
