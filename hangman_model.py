@@ -213,9 +213,16 @@ class Hangman:
 
     def show_leaderboard(self):
         name = input("Enter your name:")
-        df = pd.DataFrame([{"Name": f"{name}", "Lives": self.ui.num_lives, "Time": self.final_timer}])
-        df.to_sql(settings["pgdb"], self.db.engine, if_exists = "append")
-        pd.read_sql(settings["pgdb"], self.db.engine)
+        data = {
+            "name": [name],
+            "lives": [self.ui.num_lives],
+            "time": [self.final_timer()]
+        }
+        df = pd.DataFrame(data)
+        df.to_sql("leaderboard", self.db.engine, if_exists="append", index=False)
+        
+        print(pd.read_sql("leaderboard", self.db.engine))
+
 
     def win_lose_continue(self):
         '''
