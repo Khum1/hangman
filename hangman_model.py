@@ -1,14 +1,18 @@
 import random
+from user_interface import UserInterface
+from time import time
+from postgresql_connection import HangmanLeaderboard
+import pandas as pd
+from local_settings import postgresql as settings
+
 
 class Hangman:
 
     '''
     A class to start a game of Hangman
-    ...
+    ... 
     Attributes
     ----------
-    num_lives : int
-        number of lives that the player has remaining
     word_list : list
         list of the possible words to guess
     word : str
@@ -24,6 +28,10 @@ class Hangman:
     -------
     get_unique_letters():
         gets the number of unique letters to be guessed
+    successful_guess(guess):
+        on a successful guess, fills in the word_board with the correct letter in the correct place.
+    unsuccessful_guess(guess):
+        on an unsuccessful guess, removes a life and displays number of lives left and hangman image.
     check_guess(guess):
         checks whether the letter guessed is in the word chosen
     ask_for_input():
@@ -33,14 +41,12 @@ class Hangman:
 
     '''
 
-    def __init__(self, word_list, num_lives):
+    def __init__(self, word_list):
         '''
         Constructs the necessary attributes for the Hangman object.
 
         Parameters
         ----------
-        num_lives : int
-            number of lives that the player has remaining
         word_list : list
             list of the possible words to guess
         word : str
@@ -52,14 +58,80 @@ class Hangman:
         list_of_guesses : list
             list of guesses that have already been tried
         '''
-        self.num_lives = num_lives
         self.word_list = word_list
         self.word = random.choice(word_list)
         self.word_board = self.word_board = len(self.word)*["_"]
         self.num_letters = self.get_num_unique_letters()
         self.list_of_guesses = []
+        self.ui = UserInterface()
+        self.start_time = time()
+        self.db = HangmanLeaderboard()
 
+    def __check_letter_in_board(self, letter, unique_letters_set):
+        '''
+        Checks if the letter given is in the game_board or unique_letters_set.
+
+        Parameters
+        ----------
+        letter : str
+            guessed by the player
+        unique_letters_set : set 
+            a set listing all of the letters that have been guessed by the player
+
+        Returns
+        -------
+        None
+
+
+        '''
+        if letter in self.word_board and letter not in unique_letters_set:
+            self.letters_guessed += 1
+
+    
+    def process_input(self, guess):
+        '''
+        Converts the guess to lower case and checks it is a valid guess using the __check_valid_guess() method
+
+        Parameters
+        ----------
+        guess : str
+            input from the player to guess a letter in the word
         
+        Returns
+        -------
+        guess
+            input from the player to guess a letter in the word converted to a lower case letter
+
+        '''
+        guess = guess.lower()
+        while True:
+            message = self.__check_valid_guess(guess)
+            print(message)
+            return guess
+    
+    def __check_valid_guess(self, guess):
+        '''
+        Checks that the guess is a single letter of the alphabet
+
+        Parameters
+        ----------
+        guess : str
+            input from the player to guess a letter in the word
+
+        Returns
+        -------
+        None
+        '''
+        if len(guess) != 1 or guess.isalpha() == False:
+            message = "Invalid letter. Please enter a single alphabetical character."
+        elif guess in self.list_of_guesses:
+            message = "You already tried that letter!"
+        else:
+            message = "Thats a valid letter"
+            self.check_guess(guess)
+            self.list_of_guesses.append(guess)
+        return message
+
     def get_num_unique_letters(self):
         '''
         Gets the number of unique letters to be guessed.
@@ -70,16 +142,55 @@ class Hangman:
 
         Returns
         -------
-        len(unique_letters_set) - letters_guessed (int): the number of the unique letters in the word - the number of correct letters guessed
+        len(unique_letters_set) - self.letters_guessed : int
+            the number of the unique letters in the word - the number of correct letters guessed
 
         '''
         unique_letters_set = set()
-        letters_guessed = 0
+        self.letters_guessed = 0
         for letter in self.word: 
-            if letter in self.word_board and letter not in unique_letters_set:
-                letters_guessed += 1
+            self.__check_letter_in_board(letter, unique_letters_set)
             unique_letters_set.add(letter)
-        return len(unique_letters_set) - letters_guessed 
+        self.num_letters = int(len(unique_letters_set) - self.letters_guessed)
+        return self.num_letters
+
+    def __successful_guess(self, guess):
+        '''
+        On a successful guess, fills in the word_board with the correct letter in the correct place.
+        
+        Parameters
+        ----------
+        guess : str
+            input from the player to guess a letter in the word
+
+        Returns
+        -------
+        None
+        '''
+        print(f'Good guess! {guess} is in the word')
+        for i in range(len(self.word)):
+            if guess == self.word[i]:
+                self.word_board[i] = guess
+        self.num_letters -= 1
+        return self.word_board
+
+    def __unsuccessful_guess(self, guess):
+        '''
+        On an unsuccessful guess, removes a life and displays number of lives left and hangman image.
+
+        Parameters
+        ----------
+        guess : str
+            input from the player to gues a letter in the word
+        
+        Returns
+        -------
+        None
+        '''
+        self.ui.num_lives -= 1
+        print(f'Sorry, {guess} is not in the word. Try again')
+        print (f'You have {self.ui.num_lives} lives left.')
+        self.ui.display_image()
 
     def check_guess(self, guess): 
         '''
@@ -87,31 +198,28 @@ class Hangman:
 
         Parameters
         ----------
-        guess (str) : input from the player to guess a letter in the word
+        guess : str
+            input from the player to gues a letter in the word
 
         Returns
         -------
         None
         '''
-        guess = guess.lower()
         if guess in self.word:
-            print(f'Good guess! {guess} is in the word')
-            for i in range(len(self.word)):
-                if guess == self.word[i]:
-                    self.word_board[i] = guess
-            print (self.word_board)
-            self.num_letters = self.get_num_unique_letters()
+            self.__successful_guess(guess)
         else:
-            self.num_lives -= 1
-            print(f'Sorry, {guess} is not in the word. Try again')
-            print (f'You have {self.num_lives} lives left.')
-            self.display_image()
-    
-    def ask_for_input(self):
+            self.__unsuccessful_guess(guess)
+        print (self.word_board)
+
+    def show_leaderboard(self):
+        name = input("Enter your name:")
+        df = pd.DataFrame([{"Name": f"{name}", "Lives": self.ui.num_lives, "Time": self.final_timer}])
+        df.to_sql(settings["pgdb"], self.db.engine, if_exists = "append")
+        pd.read_sql(settings["pgdb"], self.db.engine)
+
+    def win_lose_continue(self):
         '''
-        Asks the player for a letter to be guessed. 
-        If the letter has already been guessed or the letter is non-alphabetical or more than one letter is 
-        guessed, it will return a statement to try a different letter.
+        Checks num_letters is greater than 0 and self.ui.num_lives is greater than 0, if either proves True, tells you whether you won or lost. 
 
         Parameters
         ----------
@@ -121,53 +229,24 @@ class Hangman:
         -------
         None
         '''
-        guess = input('Enter a letter: ')
-
-        while True:
-            if len(guess) != 1 or guess.isalpha() == False:
-                print("Invalid letter. Please enter a single alphabetical character.")
-                break
-            elif guess in self.list_of_guesses:
-                print('You already tried that letter!')
+        while True:  
+            if self.ui.num_lives > 0 and self.num_letters > 0:
+                guess = self.ui.ask_for_input()
+                self.process_input(guess)
+            elif self.ui.num_lives == 0:
+                print(f"You lost the game! The word was {self.word}.")
                 break
             else:
-                self.check_guess(guess)
-                self.list_of_guesses.append(guess)
+                self.end_time = time()
+                self.elapsed_time = self.final_timer()
+                print(f"Congrats, you won the game! You had {self.ui.num_lives} lives left and took {self.formatted_time} seconds to complete the word")
+                self.show_leaderboard() # TODO read through the pinterest project and get the connection updated
                 break
-
-    def display_image(self):
-        '''
-        Displays the image of the evolving hangman with each wrong guess.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-        '''
-        for item in hangman_image:
-            for char in item:
-                if char == ' ':
-                    print(char, end='')
-                elif char == 'O' and self.num_lives <= 3:
-                    print(char, end='')
-                elif char == '|' and self.num_lives <= 2:
-                    print(char, end='') 
-                elif char == '\\' and self.num_lives <= 1:
-                    print(char, end='')
-                elif char == '/' and self.num_lives <= 0:
-                    print(char, end='')
-                elif char == '/' and self.num_lives > 0: # formatting 
-                    print(' ', end='')
-                elif char == '_' and self.num_lives <= 4:
-                    print(char, end='')
-                elif char == '|' and self.num_lives <= 4:
-                    print(char, end='')
-            print('')
-
-
+    
+    def final_timer(self):
+        elapsed_time = self.end_time - self.start_time
+        self.formatted_time = "{:.2f}".format(elapsed_time)
+        return self.formatted_time 
 
 def play_game():
     '''
@@ -183,26 +262,9 @@ def play_game():
 
     '''
     word_list = ['pineapple', 'strawberries', 'raspberries', 'peach', 'apple']
-    game = Hangman(word_list, 5)
+    game = Hangman(word_list)
     print(game.word_board)
-    while True:
-        if game.num_lives > 0 and game.num_letters != 0:
-            game.ask_for_input()
-        elif game.num_lives == 0:
-            print(f"You lost the game! The word was {game.word}.")
-            break
-        else:
-            print("Congrats, you won the game!")
-            break
-
-
-hangman_image = [ #Image matrix for displaying the evolving hangman
-    ['_','_','_','_','_'],
-    ['|',' ',' ','O',' '],
-    ['|',' ','/','|','\\'],
-    ['|',' ','/',' ','\\'],
-    ['_','_','_','_','_']
-    ]
-    
-
-play_game()
+    game.win_lose_continue()
+        
+if __name__ == "__main__":
+    play_game()
